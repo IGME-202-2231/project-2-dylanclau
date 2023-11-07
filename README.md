@@ -1,4 +1,4 @@
-# Project _NAME_
+# Wild Cat Simulator
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 
@@ -6,12 +6,12 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ### Student Info
 
--   Name: _YOUR NAME_
--   Section: _##_
+-   Name: Dylan Clauson
+-   Section: 02
 
 ## Simulation Design
 
-_A brief explanation of your simulation._
+Simulator where about cats in the woods. They must chase prey to catch while also avoiding the cars on a road in the center of the map.
 
 ### Controls
 
