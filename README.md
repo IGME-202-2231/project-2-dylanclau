@@ -1,4 +1,4 @@
-# Wild Cat Simulator
+# Jujutsu Kaisen Curse Hunter
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 
@@ -11,7 +11,12 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ## Simulation Design
 
-Simulator where about cats in the woods. They must chase prey to catch while also avoiding the cars on a road in the center of the map.
+Follows the characters of Jujutsu Kaisen as they hunt curses throughout the scene.
+Weaker curses will spawn in at random intervals frequently, while stronger curses will spawn more sparsely.
+The sorcerers will flock to classmates and will hunt weaker curses (weaker curses will flock together and flee from sorcerers).
+Stronger curses will hunt sorcerers, who will flee unless they are grouped together. 
+Characters will generate points depending on how many curses they defeat (weaker curses are worth less points while stronger curses are worth more).
+Player can use points to increase character stats such as speed and strength.
 
 ### Controls
 
@@ -19,73 +24,82 @@ Simulator where about cats in the woods. They must chase prey to catch while als
     -   _Include how to preform each action ( keyboard, mouse, UI Input )_
     -   _Include what impact an action has in the simulation ( if is could be unclear )_
 
-## _Agent 1 Name_
+## Sorcerers
+- Flock to classmates
+- Seek weak curses
+- Flee from strong curses (unless they're in groups of 2+, then they'll seek stronger curses).
+- Generate points as they defeat curses (less for weak curses, more for strong curses).
 
-_A brief explanation of this agent._
+### Lone
 
-### _State 1 Name_
-
-**Objective:** _A brief explanation of this state's objective._
-
-#### Steering Behaviors
-
-- _List all behaviors used by this state_
-   - _If behavior has input data list it here_
-   - _eg, Flee - nearest Agent2_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
-   
-#### State Transistions
-
-- _List all the ways this agent can transition to this state_
-   - _eg, When this agent gets within range of Agent2_
-   - _eg, When this agent has reached target of State2_
-   
-### _State 2 Name_
-
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** When sorcerers are alone they will only seek weak curses and flee from strong curses.
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Seek - weak curses
+- Flee - strong curses
+- Flock - classmates
+- Obstacles - strong curses
+- Seperation - other classmates
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- when sorcerers are alone.
+   
+### Grouped
 
-## _Agent 2 Name_
-
-_A brief explanation of this agent._
-
-### _State 1 Name_
-
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** When sorcerers are together they will seek all curses regardless of strength.
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Seek - all curses
+- Flock - classmates
+- Obstacles - none
+- Seperation - other classmates
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
-   
-### _State 2 Name_
+- when sorcerers are in groups of 2+.
 
-**Objective:** _A brief explanation of this state's objective._
+## Strong Curses
+
+- Avoid each other
+- Seek lone sorcerers
+- Flee from grouped sorcerers
+
+### Predator
+
+**Objective:** Hunt lone sorcerers.
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- avoid - other strong curses
+- seek - lone sorcerers
+  
+- Obstacles - none
+- Seperation - other curses
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- out of range of grouped sorcerers.
+   
+### Prey
+
+**Objective:** Flee from groups of sorcerers.
+
+#### Steering Behaviors
+
+- flee - grouped sorcerers
+- Obstacles - grouped sorcerers
+- Seperation - other curses
+   
+#### State Transistions
+
+- in range of grouped sourcerers.
+
+## Weak Curses
+
+- right now they just flee from all sorcerers and flock to each other, basically an easy way to farm points.
 
 ## Sources
 
@@ -97,6 +111,10 @@ _A brief explanation of this agent._
 - _List out what you added to your game to make it different for you_
 - _If you will add more agents or states make sure to list here and add it to the documention above_
 - _If you will add your own assets make sure to list it here and add it to the Sources section
+
+- Create my own assets
+- Use flock
+- Have a simple third agent (weak curses).
 
 ## Known Issues
 
