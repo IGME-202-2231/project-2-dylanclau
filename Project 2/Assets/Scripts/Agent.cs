@@ -12,9 +12,9 @@ public abstract class Agent : MonoBehaviour
     // wander
     private float wanderAngle = 0f;
     public float maxWanderAngle = 45f;
-    public float maxWanderChangePerSecond = 10f;
+    //public float maxWanderChangePerSecond = 10f;
     [SerializeField] protected float wanderTime;
-
+    [SerializeField] protected float wanderRadius;
 
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,19 +81,16 @@ public abstract class Agent : MonoBehaviour
         return physicsObject.Velocity * time + transform.position;
     }
 
-    protected Vector3 Wander()
+    protected Vector3 Wander(float time, float radius)
     {
-        // update the angle of our current wander
-        float maxWanderChange = maxWanderChangePerSecond * Time.deltaTime;
-        wanderAngle += UnityEngine.Random.Range(-maxWanderChange, maxWanderChange);
+        Vector3 targetPos = CalcFuturePosition(time);
 
-        wanderAngle = Mathf.Clamp(wanderAngle, -maxWanderAngle, maxWanderAngle);
+        wanderAngle += Random.Range(-maxWanderAngle, maxWanderAngle) * Mathf.Deg2Rad;
 
-        // get a position that is defined by the wander angle
-        Vector3 wanderTarget = Quaternion.Euler(0, 0, wanderAngle) * physicsObject.Direction.normalized + physicsObject.Position;
+        targetPos.x += Mathf.Cos(wanderAngle) * radius;
+        targetPos.y += Mathf.Sin(wanderAngle) * radius;
 
-        // seek towards our wander position
-        return Seek(wanderTarget);
+        return Seek(targetPos);
     }
 
     protected Vector3 StayInBounds()
