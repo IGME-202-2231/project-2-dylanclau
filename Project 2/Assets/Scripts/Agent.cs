@@ -115,6 +115,8 @@ public abstract class Agent : MonoBehaviour
         return Vector3.zero;
     }
 
+    // get a separate in there!!! (kenzie sent one but watch the video too)
+
     /*
     protected Vector3 AvoidObstacles(float time)
     {

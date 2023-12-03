@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Wanderer : Agent
 {
+    [SerializeField] float wanderWeight;
+    [SerializeField] float stayInBoundsWeight;
     protected override void CalcSteeringForces()
     {
-        totalForce += Wander(wanderTime, wanderRadius);
-        totalForce += StayInBounds();
+        totalForce += Wander(wanderTime, wanderRadius) * wanderWeight;
+        totalForce += StayInBounds() * stayInBoundsWeight;
+
+        // add in a separate
     }
 }

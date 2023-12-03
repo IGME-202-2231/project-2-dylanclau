@@ -223,10 +223,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   physicsObject: {fileID: 10863048}
   maxForce: 10
-  wanderAngle: 0
+  wanderAngle: 14
   wanderStep: 1
   wanderTime: 5
   wanderRadius: 1
+  wanderWeight: 4
+  stayInBoundsWeight: 10
 --- !u!114 &10863048
 MonoBehaviour:
   m_ObjectHideFlags: 0
