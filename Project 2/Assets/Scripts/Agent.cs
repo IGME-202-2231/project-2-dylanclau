@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class Agent : MonoBehaviour
 {
     // ----- fields ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] protected PhysicsObject physicsObject;
+    [SerializeField] protected float maxForce = 10;
 
     private float maxSpeed;
 
     // wander
-    private float wanderAngle = 0f;
-    public float maxWanderAngle = 45f;
-    //public float maxWanderChangePerSecond = 10f;
-    [SerializeField] protected float wanderTime;
+    [SerializeField] private float wanderAngle = 0f;
+    [SerializeField] protected float wanderStep = 1f;
+    [SerializeField] protected float wanderTime = 1f;
     [SerializeField] protected float wanderRadius;
+
+    protected Vector3 totalForce;
 
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +31,11 @@ public abstract class Agent : MonoBehaviour
     // ----- update ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     void Update()
     {
+        totalForce = Vector3.zero;
         CalcSteeringForces();
+        totalForce = Vector3.ClampMagnitude(totalForce, maxForce);
+        physicsObject.ApplyForce(totalForce);
+        transform.rotation = Quaternion.LookRotation(Vector3.back, physicsObject.Direction);
     }
 
     // ----- methods --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -85,7 +92,7 @@ public abstract class Agent : MonoBehaviour
     {
         Vector3 targetPos = CalcFuturePosition(time);
 
-        wanderAngle += Random.Range(-maxWanderAngle, maxWanderAngle) * Mathf.Deg2Rad;
+        wanderAngle += Random.Range(-wanderStep, wanderStep) * Mathf.Deg2Rad;
 
         targetPos.x += Mathf.Cos(wanderAngle) * radius;
         targetPos.y += Mathf.Sin(wanderAngle) * radius;
@@ -107,4 +114,48 @@ public abstract class Agent : MonoBehaviour
 
         return Vector3.zero;
     }
+
+    /*
+    protected Vector3 AvoidObstacles(float time)
+    {
+        Vector3 totalAvoidForces = Vector3.zero;
+        foundObstacles.Clear();
+
+        foreach (Obstacle obs in ScreenManager.Obstacles)
+        {
+            Vector3 agentToObstacle = obs.transform.position - transform.position;
+            float rightDot = 0;
+            float forwardDot = 0;
+            forwardDot = Vector3.Dot(physicsObject.direction, agentToObstacle);
+
+            Vector3 futurePos = GetFuturePosition(time);
+            float dist = Vector3.Distance(transform.position, futurePos) + radius;
+
+            if (forwardDot >= -obs.radius)
+            {
+                if (forwardDot <= obs.radius)
+                {
+                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
+                    Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.maxSpeed;
+
+                    if (Mathf.Abs(rightDot) <= radius + obs.radius)
+                    {
+                        foundObstacles.Add(obs.transform.position);
+
+                        if (rightDot < 0)
+                        {
+                            totalAvoidForces += steeringForce;
+                        }
+                        else
+                        {
+                            totalAvoidForces += -steeringForce;
+                        }
+                    }
+                }
+            }
+        }
+
+        return totalAvoidForces;
+    }
+    */
 }
