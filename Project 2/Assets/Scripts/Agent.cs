@@ -23,7 +23,7 @@ public abstract class Agent : MonoBehaviour
     protected Vector3 totalForce;
 
     [SerializeField] protected List<Vector3> foundObstacles = new List<Vector3>();
-    [SerializeField] protected float obstacleTime = 1f;
+    [SerializeField] protected float avoidTime = 1f;
 
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -132,20 +132,26 @@ public abstract class Agent : MonoBehaviour
         foreach (Obstacle obs in manager.Obstacles)
         {
             Vector3 agentToObstacle = obs.transform.position - transform.position;
-            float rightDot = 0;
-            float forwardDot = 0;
+            float rightDot = 0, forwardDot = 0;
+
             forwardDot = Vector3.Dot(physicsObject.Direction, agentToObstacle);
 
             Vector3 futurePos = CalcFuturePosition(time);
             float dist = Vector3.Distance(transform.position, futurePos) + physicsObject.Radius;
 
+            // if in front of me
             if (forwardDot >= -obs.Radius)
             {
-                if (forwardDot <= obs.Radius)
-                {
-                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
-                    Vector3 steeringForce = transform.right * ( 1- forwardDot / dist) * physicsObject.MaxSpeed;
 
+                // within the box in front of us
+                if (forwardDot <= dist + obs.Radius)
+                {
+                    // how far left/right
+                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
+
+                    Vector3 steeringForce = transform.right * (1 - forwardDot / dist) * physicsObject.MaxSpeed;
+
+                    // is the obstacle within the safe box width
                     if (Mathf.Abs(rightDot) <= physicsObject.Radius + obs.Radius)
                     {
                         foundObstacles.Add(obs.transform.position);

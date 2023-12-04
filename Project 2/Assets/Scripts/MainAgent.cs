@@ -12,7 +12,7 @@ public class MainAgent : Agent
     {
         totalForce += Wander(wanderTime, wanderRadius) * wanderWeight;
         totalForce += StayInBounds() * stayInBoundsWeight;
-        totalForce += AvoidObstacles(obstacleTime) * avoidObstaclesWeight;
+        totalForce += AvoidObstacles(avoidTime) * avoidObstaclesWeight;
 
         // add in a separate
     }
@@ -22,7 +22,7 @@ public class MainAgent : Agent
         //
         //  Draw safe space box
         //
-        Vector3 futurePos = CalcFuturePosition(obstacleTime);
+        Vector3 futurePos = CalcFuturePosition(avoidTime);
 
         float dist = Vector3.Distance(transform.position, futurePos) + physicsObject.Radius;
 

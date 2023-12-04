@@ -243,10 +243,10 @@ MonoBehaviour:
   maxForce: 10
   wanderAngle: 0
   wanderStep: 1
-  wanderTime: 5
-  wanderRadius: 1
+  wanderTime: 1
+  wanderRadius: 3
   foundObstacles: []
-  obstacleTime: 1
+  avoidTime: 1
   wanderWeight: 4
   stayInBoundsWeight: 10
   avoidObstaclesWeight: 0
