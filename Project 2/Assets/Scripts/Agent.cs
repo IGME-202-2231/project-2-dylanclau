@@ -8,11 +8,10 @@ public abstract class Agent : MonoBehaviour
 {
     // ----- fields ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] private Manager manager;
-
     [SerializeField] protected PhysicsObject physicsObject;
     [SerializeField] protected float maxForce = 10;
-
-    private float maxSpeed;
+    protected float maxSpeed;
+    protected Vector3 totalForce;
 
     // wander
     [SerializeField] private float wanderAngle = 0f;
@@ -20,11 +19,10 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected float wanderTime = 1f;
     [SerializeField] protected float wanderRadius;
 
-    protected Vector3 totalForce;
-
-    [SerializeField] protected List<Vector3> foundObstacles = new List<Vector3>();
+    // avoid obstacles
+    protected List<Vector3> foundObstacles = new List<Vector3>();
     [SerializeField] protected float avoidTime = 1f;
-
+    [SerializeField] protected Vector3 totalAvoidForces;
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     void Start()
@@ -126,7 +124,7 @@ public abstract class Agent : MonoBehaviour
     // (1 - fDot / dist)
     protected Vector3 AvoidObstacles(float time)
     {
-        Vector3 totalAvoidForces = Vector3.zero;
+        totalAvoidForces = Vector3.zero;
         foundObstacles.Clear();
 
         foreach (Obstacle obs in manager.Obstacles)
@@ -156,13 +154,16 @@ public abstract class Agent : MonoBehaviour
                     {
                         foundObstacles.Add(obs.transform.position);
 
+                        // if left, steer right
                         if (rightDot < 0)
                         {
-                            totalAvoidForces += steeringForce;
+                            totalAvoidForces += steeringForce * 2;
                         }
+
+                        // if right, steer left
                         else
                         {
-                            totalAvoidForces += -steeringForce;
+                            totalAvoidForces -= steeringForce * 2;
                         }
                     }
                 }

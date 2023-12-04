@@ -245,11 +245,11 @@ MonoBehaviour:
   wanderStep: 1
   wanderTime: 1
   wanderRadius: 3
-  foundObstacles: []
   avoidTime: 1
+  totalAvoidForces: {x: 0, y: 0, z: 0}
   wanderWeight: 4
-  stayInBoundsWeight: 10
-  avoidObstaclesWeight: 0
+  stayInBoundsWeight: 5
+  avoidObstaclesWeight: 3
 --- !u!1001 &30548340
 PrefabInstance:
   m_ObjectHideFlags: 0
