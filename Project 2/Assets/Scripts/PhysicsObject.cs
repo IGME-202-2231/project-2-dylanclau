@@ -21,6 +21,8 @@ public class PhysicsObject : MonoBehaviour
 
     private Vector3 screenMax = Vector3.zero;
 
+    [SerializeField] private float radius;
+
 
 
     // ----- properties -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,6 +35,8 @@ public class PhysicsObject : MonoBehaviour
     public float MaxSpeed { get { return maxSpeed; } }
 
     public Vector3 ScreenMax { get { return screenMax; } }
+
+    public float Radius { get { return radius; } }
 
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

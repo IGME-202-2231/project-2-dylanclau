@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Manager : MonoBehaviour
 {
-    [SerializeField] private float radius;
+    [SerializeField] List<Obstacle> obstacles;
 
-    public float Radius
+    public List<Obstacle> Obstacles
     {
-        get { return radius; }
+        get { return obstacles; }
     }
 
     // Start is called before the first frame update

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public abstract class Agent : MonoBehaviour
 {
     // ----- fields ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    [SerializeField] private Manager manager;
+
     [SerializeField] protected PhysicsObject physicsObject;
     [SerializeField] protected float maxForce = 10;
 
@@ -18,6 +21,9 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected float wanderRadius;
 
     protected Vector3 totalForce;
+
+    [SerializeField] protected List<Vector3> foundObstacles = new List<Vector3>();
+    [SerializeField] protected float obstacleTime = 1f;
 
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,30 +123,30 @@ public abstract class Agent : MonoBehaviour
 
     // get a separate in there!!! (kenzie sent one but watch the video too)
 
-    /*
+    // (1 - fDot / dist)
     protected Vector3 AvoidObstacles(float time)
     {
         Vector3 totalAvoidForces = Vector3.zero;
         foundObstacles.Clear();
 
-        foreach (Obstacle obs in ScreenManager.Obstacles)
+        foreach (Obstacle obs in manager.Obstacles)
         {
             Vector3 agentToObstacle = obs.transform.position - transform.position;
             float rightDot = 0;
             float forwardDot = 0;
-            forwardDot = Vector3.Dot(physicsObject.direction, agentToObstacle);
+            forwardDot = Vector3.Dot(physicsObject.Direction, agentToObstacle);
 
-            Vector3 futurePos = GetFuturePosition(time);
-            float dist = Vector3.Distance(transform.position, futurePos) + radius;
+            Vector3 futurePos = CalcFuturePosition(time);
+            float dist = Vector3.Distance(transform.position, futurePos) + physicsObject.Radius;
 
-            if (forwardDot >= -obs.radius)
+            if (forwardDot >= -obs.Radius)
             {
-                if (forwardDot <= obs.radius)
+                if (forwardDot <= obs.Radius)
                 {
                     rightDot = Vector3.Dot(transform.right, agentToObstacle);
-                    Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.maxSpeed;
+                    Vector3 steeringForce = transform.right * ( 1- forwardDot / dist) * physicsObject.MaxSpeed;
 
-                    if (Mathf.Abs(rightDot) <= radius + obs.radius)
+                    if (Mathf.Abs(rightDot) <= physicsObject.Radius + obs.Radius)
                     {
                         foundObstacles.Add(obs.transform.position);
 
@@ -159,5 +165,4 @@ public abstract class Agent : MonoBehaviour
 
         return totalAvoidForces;
     }
-    */
 }
