@@ -157,13 +157,13 @@ public abstract class Agent : MonoBehaviour
                         // if left, steer right
                         if (rightDot < 0)
                         {
-                            totalAvoidForces += steeringForce * 2;
+                            totalAvoidForces += steeringForce;
                         }
 
                         // if right, steer left
                         else
                         {
-                            totalAvoidForces -= steeringForce * 2;
+                            totalAvoidForces -= steeringForce;
                         }
                     }
                 }
