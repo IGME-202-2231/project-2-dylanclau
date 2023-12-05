@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField] List<Obstacle> obstacles;
+    [SerializeField] List<Obstacle> obstacles = new List<Obstacle>();
 
     public List<Obstacle> Obstacles
     {
         get { return obstacles; }
+        set { obstacles = value; }
     }
 
     // Start is called before the first frame update

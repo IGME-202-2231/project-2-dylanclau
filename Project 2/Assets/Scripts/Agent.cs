@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +22,11 @@ public abstract class Agent : MonoBehaviour
     protected List<Vector3> foundObstacles = new List<Vector3>();
     [SerializeField] protected float avoidTime = 1f;
     [SerializeField] protected Vector3 totalAvoidForces;
+
+    public Manager Manager { 
+        get { return manager; } 
+        set { manager = value; }
+    }
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     void Start()
