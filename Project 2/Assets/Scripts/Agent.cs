@@ -23,9 +23,17 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected float avoidTime = 1f;
     [SerializeField] protected Vector3 totalAvoidForces;
 
+    // separate
+    [SerializeField] protected float separateRange = 1;
+
     public Manager Manager { 
         get { return manager; } 
         set { manager = value; }
+    }
+
+    public PhysicsObject PhysicsObject
+    {
+        get { return physicsObject; }
     }
 
     // ----- start ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -123,9 +131,56 @@ public abstract class Agent : MonoBehaviour
         return Vector3.zero;
     }
 
-    // get a separate in there!!! (kenzie sent one but watch the video too)
+    protected Vector3 Separate(List<Agent> agents)
+    {
+        Vector3 separateForce = Vector3.zero;
 
-    // (1 - fDot / dist)
+        foreach (Agent a in agents)
+        {
+            float dist = Vector3.Distance(transform.position, a.transform.position);
+
+            if (Mathf.Epsilon < dist)
+            {
+                separateForce += Flee(a.PhysicsObject) * (separateRange / dist);
+            }
+        }
+
+        return separateForce;
+    }
+
+    protected Vector3 Cohesion(List<Agent> agents)
+    {
+
+        Vector3 cohesionForce = Vector3.zero;
+
+        foreach(Agent a in agents)
+        {
+            cohesionForce += a.physicsObject.Position;
+        }
+
+        cohesionForce /= agents.Count;
+
+        cohesionForce -= transform.position;
+
+        return cohesionForce;
+    }
+
+    protected Vector3 Alignment(List<Agent> agents)
+    {
+        Vector3 alignmentForce = Vector3.zero;
+
+        foreach(Agent a in agents)
+        {
+            alignmentForce += a.physicsObject.Direction;
+        }
+
+        alignmentForce = (alignmentForce.normalized) * maxSpeed;
+
+        alignmentForce -= physicsObject.Velocity;
+
+        return alignmentForce;
+    }
+
     protected Vector3 AvoidObstacles(float time)
     {
         totalAvoidForces = Vector3.zero;

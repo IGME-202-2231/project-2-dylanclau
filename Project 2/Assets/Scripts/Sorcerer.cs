@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainAgent : Agent
+public class Sorcerer : Agent
 {
     [SerializeField] private float wanderWeight;
     [SerializeField] private float stayInBoundsWeight;
     [SerializeField] private float avoidObstaclesWeight;
+
+    [SerializeField] private float separateWeight;
+    [SerializeField] private float cohesionWeight;
+    [SerializeField] private float alignmentWeight;
 
     protected override void CalcSteeringForces()
     {
@@ -14,7 +18,10 @@ public class MainAgent : Agent
         totalForce += StayInBounds() * stayInBoundsWeight;
         totalForce += AvoidObstacles(avoidTime) * avoidObstaclesWeight;
 
-        // add in a separate
+        // flocking
+        totalForce += Separate(Manager.Sorcerers) * separateWeight;
+        totalForce += Cohesion(Manager.Sorcerers) * cohesionWeight;
+        totalForce += Alignment(Manager.Sorcerers) * alignmentWeight;
     }
 
     private void OnDrawGizmos()
