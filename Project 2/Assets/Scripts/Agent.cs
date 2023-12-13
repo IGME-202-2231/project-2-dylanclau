@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +48,7 @@ public abstract class Agent : MonoBehaviour
     // ----- update ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     void Update()
     {
+        // movement
         totalForce = Vector3.zero;
         CalcSteeringForces();
         totalForce = Vector3.ClampMagnitude(totalForce, maxForce);
@@ -73,9 +75,9 @@ public abstract class Agent : MonoBehaviour
 
     }
 
-    public Vector3 Seek(PhysicsObject target)
+    public Vector3 Seek(Agent target)
     {
-        return Seek(target.Position);
+        return Seek(target.PhysicsObject.Position);
     }
 
     protected Vector3 Flee(Vector3 targetPos)
@@ -94,9 +96,9 @@ public abstract class Agent : MonoBehaviour
 
     }
 
-    public Vector3 Flee(PhysicsObject target)
+    public Vector3 Flee(Agent target)
     {
-        return Flee(target.Position);
+        return Flee(target.PhysicsObject.Position);
     }
 
     public Vector3 CalcFuturePosition(float time)
@@ -108,7 +110,7 @@ public abstract class Agent : MonoBehaviour
     {
         Vector3 targetPos = CalcFuturePosition(time);
 
-        wanderAngle += Random.Range(-wanderStep, wanderStep) * Mathf.Deg2Rad;
+        wanderAngle += UnityEngine.Random.Range(-wanderStep, wanderStep) * Mathf.Deg2Rad;
 
         targetPos.x += Mathf.Cos(wanderAngle) * radius;
         targetPos.y += Mathf.Sin(wanderAngle) * radius;
@@ -141,7 +143,7 @@ public abstract class Agent : MonoBehaviour
 
             if (Mathf.Epsilon < dist)
             {
-                separateForce += Flee(a.PhysicsObject) * (separateRange / dist);
+                separateForce += Flee(a) * (separateRange / dist);
             }
         }
 

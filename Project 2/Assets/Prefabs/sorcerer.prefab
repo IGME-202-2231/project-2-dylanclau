@@ -126,8 +126,9 @@ MonoBehaviour:
   totalAvoidForces: {x: 0, y: 0, z: 0}
   separateRange: 1
   wanderWeight: 3
-  stayInBoundsWeight: 7
-  avoidObstaclesWeight: 15
-  separateWeight: 1
-  cohesionWeight: 5
+  stayInBoundsWeight: 50
+  avoidObstaclesWeight: 50
+  seekWeight: 100
+  separateWeight: 2
+  cohesionWeight: 15
   alignmentWeight: 5

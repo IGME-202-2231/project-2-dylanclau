@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -43,7 +44,15 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        foreach(Sorcerer s in Sorcerers)
+        {
+            s.ManageState();
+        }
+
+        foreach(Curse c in Curses)
+        {
+            c.ManageState();
+        }
     }
 
     public void ObstacleSpawn()
@@ -94,6 +103,31 @@ public class Manager : MonoBehaviour
         }
     }
 
+    public void CurseSpawnUser()
+    {
+        Vector3 location;
+        Vector3 rotation = new Vector3(0, 0, 0);
+
+        for (int i = 0; i < 5; i++)
+        {
+            float x = Gaussian(0, standDev);
+            float y = Gaussian(0, standDev);
+
+            while (x == 0 && y == 0)
+            {
+                x = Gaussian(0, standDev);
+                y = Gaussian(0, standDev);
+            }
+
+            location = new Vector3(x, y, 0);
+            GameObject thing = Agent.Instantiate(prefab1, location, Quaternion.Euler(rotation));
+
+            thing.GetComponent<Agent>().Manager = this;
+
+            curses.Add(thing.GetComponent<Agent>());
+        }
+    }
+
     private float Gaussian(float mean, float stdDev)
     {
         float val1 = Random.Range(0f, 1f);
@@ -104,5 +138,19 @@ public class Manager : MonoBehaviour
         Mathf.Sin(2.0f * Mathf.PI * val2);
 
         return mean + stdDev * gaussValue;
+    }
+
+    private bool CircleCollision(Bounds circle1, Bounds circle2)
+    {
+        float radius1 = circle1.max.y - circle1.center.y;
+        float radius2 = circle2.max.x - circle2.center.x;
+        float distance = Mathf.Sqrt(Mathf.Pow(circle1.center.x - circle2.center.x, 2) + Mathf.Pow(circle1.center.y - circle2.center.y, 2));
+
+        if (distance < radius1 + radius2)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

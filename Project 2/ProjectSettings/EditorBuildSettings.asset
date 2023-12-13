@@ -11,4 +11,5 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Exercise10.unity
     guid: 11aded64df46b0245b166a15f7c99318
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 1db9a0a8b24e32640a78afabbdd21fd8, type: 2}
